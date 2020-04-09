@@ -7,15 +7,15 @@ class Node{
 
 
 
-function walk(tree,getChildNodesOfParentNode, currentNodes = [], parentNode){
+function walk(tree,getFirstNode,getChildNodesOfParentNode, currentNodes = [], parentNode){
 
-    if (typeof parentNode == 'undefined') currentNodes = walk(tree,getChildNodesOfParentNode,[],new Node({key:'a'},tree.a))
+    if (typeof parentNode == 'undefined') currentNodes = walk(tree,getFirstNode,getChildNodesOfParentNode,[],getFirstNode(tree,Node))
     else{
         currentNodes.push(parentNode);
 
         getChildNodesOfParentNode(tree,parentNode,Node).forEach(childNode=>{
             
-            currentNodes = walk(tree,getChildNodesOfParentNode,currentNodes,childNode);
+            currentNodes = walk(tree,getFirstNode,getChildNodesOfParentNode,currentNodes,childNode);
         })
         //rest
     }
