@@ -20,7 +20,7 @@ module.exports = {
                 }
             },
             'c':{
-                vowel:true,
+                vowel:false,
                 children:{
                     'h':{
                         vowel:false,
