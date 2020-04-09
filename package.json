@@ -1,7 +1,7 @@
 {
-  "name": "walk-tree",
+  "name": "@nickmanning214/walk-tree",
   "version": "0.0.0",
-  "description": "",
+  "description": "A general solution for walking trees of any structure",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
