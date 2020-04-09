@@ -18,10 +18,11 @@ let nested = walk(letterPyramidNested,(tree,parentNode,Node)=>{
     return allChildKeys.map(keysToNode);
 });
 
+/*
 let directory = walk(path.join(__dirname,'directory'),(tree,parentNode,node)=>{
     
 })
-
+*/
 
 
 describe('collection',function(){
