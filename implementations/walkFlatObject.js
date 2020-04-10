@@ -1,4 +1,4 @@
-const walk = require('./index.js')
+const walk = require('../index.js')
 
 
 

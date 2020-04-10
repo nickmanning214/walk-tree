@@ -5,9 +5,9 @@ const letterPyramidNested = require('./letterPyramidNested.js');
 const path = require('path');
 const fs = require('fs');
 
-const walkFlatObject = require('../walkFlatObject.js');
-const walkNestedObject = require('../walkNestedObject.js');
-const walkDirectory = require('../walkDirectory.js');
+const walkFlatObject = require('../implementations/walkFlatObject.js');
+const walkNestedObject = require('../implementations/walkNestedObject.js');
+const walkDirectory = require('../implementations/walkDirectory.js');
 
 let flat = walkFlatObject(letterPyramidFlat,'parent');
 let nested = walkNestedObject(letterPyramidNested);
