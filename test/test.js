@@ -5,33 +5,20 @@ const letterPyramidNested = require('./letterPyramidNested.js');
 const path = require('path');
 const fs = require('fs');
 
-let flat = walk(letterPyramidFlat,(tree,Node)=>new Node({key:'a'},tree.a),(tree,parentNode,Node)=>{
-    //Here Calculate children from entire tree or from parentNode
-    const allTreeKeys = Object.keys(tree);
-    const keysToNode = key=>new Node({key},tree[key]);
-    const allTreeNodes = allTreeKeys.map(keysToNode)
-    return allTreeNodes.filter(node=>node.value.parent==parentNode.metaData.key);
-});
+const walkFlatObject = require('../walkFlatObject.js');
+const walkNestedObject = require('../walkNestedObject.js');
+const walkDirectory = require('../walkDirectory.js');
 
-let nested = walk(letterPyramidNested,(tree,Node)=>new Node({key:'a'},tree.a),(tree,parentNode,Node)=>{
-    const allChildKeys = typeof parentNode.value.children !== 'undefined'? Object.keys(parentNode.value.children) : [];
-    const keysToNode = key=>new Node({key,parent:parentNode.metaData.key},parentNode.value.children[key]);
-    return allChildKeys.map(keysToNode);
-});
-
-
-let directory = walk('directory',(tree,Node)=>new Node({parentPath:__dirname},tree),(tree,parentNode,Node)=>{
-
-    const dirName = path.join(parentNode.metaData.parentPath,parentNode.value);
-    if (fs.lstatSync(dirName).isDirectory()){
-        return fs.readdirSync(dirName).map(fileName=>new Node({parentPath:dirName},fileName))
-    }
-    else return [];
-})
+let flat = walkFlatObject(letterPyramidFlat,'parent');
+let nested = walkNestedObject(letterPyramidNested);
+let directory = walkDirectory(__dirname,'directory');
 
 
 
-describe('collection',function(){
+
+
+
+describe('walkFlatObject',function(){
     it('should walk the tree',function(){
         
         assert.deepEqual(
@@ -49,6 +36,11 @@ describe('collection',function(){
                 'kparent:c' ],
                 
         )
+    })
+})
+
+describe('walkNestedObject',function(){
+    it('should walk the tree',function(){
 
         assert.deepEqual(
             nested.map(n=>`${n.metaData.key}${n.value.vowel?'vowel':''}${n.metaData.parent?`parent:${n.metaData.parent}`:''}`).sort(),
@@ -64,11 +56,11 @@ describe('collection',function(){
                 'jparent:c',
                 'kparent:c' ]
         )
-
     })
-})
 
-describe('directory',function(){
+});
+
+describe('walkDirectory',function(){
     it('should walk the directory',function(){
 
         //TO DO: Sort to guarantee equality (have to think through how sort works here though)
