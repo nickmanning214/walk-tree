@@ -13,11 +13,11 @@ class Tree{
     }
     flatten(currentNodes = [], parentNode){ //old "walk"
 
-        if (typeof parentNode == 'undefined') currentNodes = walk([],this.getFirstNode(tree,Node))
+        if (typeof parentNode == 'undefined') currentNodes = walk([],this.getFirstNode(this.structure,Node))
         else{
             currentNodes.push(parentNode);
     
-            this.getChildNodesOfParentNode(this.tree,parentNode,Node).forEach(childNode=>{
+            this.getChildNodesOfParentNode(this.structure,parentNode,Node).forEach(childNode=>{
                 
                 currentNodes = walk(currentNodes,childNode);
             })
