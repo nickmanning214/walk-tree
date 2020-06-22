@@ -11,9 +11,33 @@ let flat = walkFlatObject(letterPyramidFlat,'parent');
 let nested = walkNestedObject(letterPyramidNested);
 let directory = walkDirectory(__dirname,'directory');
 
+let customStructure = require('./custom.js');
 
+function getFirstNode(structure,Node){
+    return new Node({path:'00'},structure[0][0]);
+}
 
+function getChildNodesFromTreeAndParentNode(structure,parentNode,Node){
+    
+    
+    const pathToIndex = {
+        '00':1,
+        '10':2,
+        '11':3,
+        '12':4
+    };
+    
+    const index = pathToIndex[parentNode.metaData.path];
+    if (!index) return [];
+    const children = structure[index].map((value,i)=>new Node({path:`${index}${i}`},structure[index][i]));
+    
+    return children;
 
+}
+
+const Tree = require('../index.js').Tree;
+let customTree = new Tree(customStructure,getFirstNode,getChildNodesFromTreeAndParentNode)
+console.log(customTree.flatten());
 
 describe('walkFlatObject',function(){
     it('should walk the tree',function(){
@@ -70,5 +94,13 @@ describe('walkDirectory',function(){
             path.join(__dirname,'directory/file1.txt'),
             path.join(__dirname,'directory/file2.js')
         ]);
+    })
+})
+
+describe('Tree',function(){
+    describe('flatten',function(){
+        it('should flatten',function(){
+            assert.deepEqual('a','a')
+        })
     })
 })
