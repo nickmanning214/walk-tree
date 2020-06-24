@@ -1,6 +1,12 @@
 const Node = require('./private_classes/Node.js');
 const Node_Beta = require('./private_classes/Node_Beta.js');
 
+function arrayequal(array1,array2){
+    //https://stackoverflow.com/a/19746771/1763217
+    return array1.length === array2.length && array1.every((value, index) => value === array2[index])
+
+}
+
 class Tree{
     constructor(structure,describeRoots,describeChildren){
         this.structure = structure;
@@ -40,20 +46,8 @@ class Tree{
     }
 
 
-    flatten(currentNodes = [], parentNode){ //old "walk"
-    
-        if (typeof parentNode == 'undefined') currentNodes = this.flatten([],this.getFirstNode(this.structure,Node))
-        else{
-            currentNodes.push(parentNode);
-    
-            this.getChildNodesOfParentNode(this.structure,parentNode,Node).forEach(childNode=>{
-                
-                currentNodes = this.flatten(currentNodes,childNode);
-            })
-            //rest
-        }
-        return currentNodes;
-    
+    getValueByPath(pathArr){
+        return this.nodes.filter(node=>arrayequal(pathArr,node.path))[0].value;
     }
     
 }

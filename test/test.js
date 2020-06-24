@@ -116,8 +116,9 @@ describe('Tree',function(){
             }
             else return [];
         }
-        const directoryTree = new Tree(__dirname,describeRoots,describeChildren)
-    })
+        const directoryTree = new Tree(__dirname,describeRoots,describeChildren);
+        assert(directoryTree.getValueByPath([0])===__dirname);
+    });
 
     describe('letter tree',function(){
         
