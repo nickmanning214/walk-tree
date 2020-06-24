@@ -1,18 +1,47 @@
-class Node{
-    constructor(metaData,value){
-        this.metaData = metaData;
-        this.value = value;
-    }
-}
+const Node = require('./private_classes/Node.js');
+const Node_Beta = require('./private_classes/Node_Beta.js');
 
 class Tree{
-    constructor(structure,getFirstNode,getChildNodesOfParentNode){
+    constructor(structure,describeRoots,describeChildren){
         this.structure = structure;
-        this.getFirstNode = getFirstNode;
-        this.getChildNodesOfParentNode = getChildNodesOfParentNode;
-    }
-    flatten(currentNodes = [], parentNode){ //old "walk"
+        this.describeRoots = describeRoots;
+        this.describeChildren = describeChildren;
 
+        this.firstNodes = this.describeRoots(this.structure).map((value,i)=>{
+            return new Node_Beta([i],value);
+        });
+
+        let nodes = [...this.firstNodes];
+
+        function addChildNodes(node){
+            //node is already in the array
+            let childNodes = this.describeChildren(node,this.structure).map((value,j,nodes)=>{
+                return new Node_Beta([...node.path,j],value);
+            });
+
+            childNodes.forEach(node=>{
+                nodes.push(node);
+                addChildNodes.call(this,node)
+            })
+
+        }
+
+        this.firstNodes.forEach(node=>{
+            //"node" is already in the array
+            addChildNodes.call(this,node);
+        })
+
+ 
+        this.nodes = nodes;
+
+
+      
+
+    }
+
+
+    flatten(currentNodes = [], parentNode){ //old "walk"
+    
         if (typeof parentNode == 'undefined') currentNodes = this.flatten([],this.getFirstNode(this.structure,Node))
         else{
             currentNodes.push(parentNode);
