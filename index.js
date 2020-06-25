@@ -63,8 +63,8 @@ class Tree{
 
         while(currentChildNode){
             children.push(this.getValueByPath(currentChildPath));
-            childIndex++;
-            currentChildPath = [...pathArr,childIndex]
+            currentChildIndex++;
+            currentChildPath = [...pathArr,currentChildIndex]
         }
         return children;
     }
