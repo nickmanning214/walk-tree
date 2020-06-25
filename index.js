@@ -54,7 +54,7 @@ class Tree{
         return this.getNodeByPath(pathArr).value;
     }
 
-    getChildrenyPath(pathArr){
+    getChildrenByPath(pathArr){
         let children = [];
         
         let currentChildIndex = 0;
