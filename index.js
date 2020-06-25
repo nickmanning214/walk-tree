@@ -45,9 +45,28 @@ class Tree{
 
     }
 
+    getNodeByPath(pathArr){
+        return this.nodes.filter(node=>arrayequal(pathArr,node.path))[0]; // todo "find" instead of filter
+    }
+
 
     getValueByPath(pathArr){
-        return this.nodes.filter(node=>arrayequal(pathArr,node.path))[0].value;
+        return this.getNodeByPath(pathArr).value;
+    }
+
+    getChildrenyPath(pathArr){
+        let children = [];
+        
+        let currentChildIndex = 0;
+        let currentChildPath = [...pathArr,currentChildIndex]
+        let currentChildNode = this.getNodeByPath(currentChildPath);
+
+        while(currentChildNode){
+            children.push(this.getValueByPath(currentChildPath));
+            childIndex++;
+            currentChildPath = [...pathArr,childIndex]
+        }
+        return children;
     }
     
 }
