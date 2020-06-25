@@ -51,7 +51,8 @@ class Tree{
 
 
     getValueByPath(pathArr){
-        return this.getNodeByPath(pathArr).value;
+        const node = this.getNodeByPath(pathArr);
+        return node && node.value;
     }
 
     getChildrenByPath(pathArr){
@@ -65,6 +66,7 @@ class Tree{
             children.push(this.getValueByPath(currentChildPath));
             currentChildIndex++;
             currentChildPath = [...pathArr,currentChildIndex]
+            currentChildNode = this.getNodeByPath(currentChildPath);
         }
         return children;
     }
