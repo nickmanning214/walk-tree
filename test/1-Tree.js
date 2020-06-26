@@ -50,8 +50,8 @@ describe('Tree',function(){
 
         describe('#getChildrenByPath',function(){
             it('should return the children',function(){
-                console.log(directoryTree.getValueByPath([0]))
-                console.log(directoryTree.getChildrenByPath([0]))
+                console.log(customTree.getValueByPath([0]))
+                console.log(customTree.getChildrenByPath([0]))
                 //assert(directoryTree.getChildrenByPath([0]));
             })
         });
