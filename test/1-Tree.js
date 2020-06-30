@@ -5,8 +5,8 @@ const Tree = require('../index.js').Tree;
 let customStructure = require('./structures/custom.js');
 
 const _Node = require('../private_classes/Node.js')
-const _Node_Beta = require('../private_classes/Node_Beta.js')
-
+const _Node_Beta = require('../private_classes/Node_Beta.js');
+const flatObject = require('./tree-instances/flatObject.js');
 
 
 
@@ -22,7 +22,7 @@ describe('Tree',function(){
         const nestedObjectTree = require('./tree-instances/nestedObject.js');
         const flatObjectTree = require('./tree-instances/flatObject.js');
         const customTree = require('./tree-instances/custom.js');
-
+        
 
         describe('#getValueByPath',function(){
             
@@ -50,11 +50,25 @@ describe('Tree',function(){
 
         describe('#getChildrenByPath',function(){
             it('should return the children',function(){
-                console.log(customTree.getValueByPath([0]))
-                console.log(customTree.getChildrenByPath([0]))
+                //console.log(customTree.getValueByPath([0]))
+                //console.log(customTree.getChildrenByPath([0]))
                 //assert(directoryTree.getChildrenByPath([0]));
             })
         });
+
+        describe('#pushChildNode',function(){
+            const clone = Object.assign( {}, flatObjectTree ); 
+            Object.setPrototypeOf( clone, Tree.prototype );
+            clone.nodes = [...flatObjectTree.nodes];
+            //let clone = Object.assign( Object.create( Object.getPrototypeOf(flatObjectTree)), flatObjectTree)
+            clone.pushChildNode([0],{
+                vowel:false,
+                parent:'a'
+            },function(structure,parentNode,value){
+                structure['l'] = value;
+            });
+            //it's a problem that the "key" is lost, because this needs to be used in "describe push", etc
+        })
        
         
 
@@ -102,9 +116,10 @@ describe('Tree',function(){
                     return node.path
                 });
 
+ 
 
                 assert.deepEqual(pathsHardCoded,nestedPaths);
-                assert.deepEqual(flatPaths,nestedPaths);
+                assert.deepEqual(flatPaths,nestedPaths); //"Try this idk" still there even though it's cloned...
 
               
                 

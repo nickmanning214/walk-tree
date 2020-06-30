@@ -8,10 +8,11 @@ function arrayequal(array1,array2){
 }
 
 class Tree{
-    constructor(structure,describeRoots,describeChildren){
+    constructor(structure,describeRoots,describeChildren,describePush){
         this.structure = structure;
         this.describeRoots = describeRoots;
         this.describeChildren = describeChildren;
+        this.describePush = describePush;
 
         this.firstNodes = this.describeRoots(this.structure).map((value,i)=>{
             return new Node_Beta([i],value);
@@ -69,6 +70,26 @@ class Tree{
             currentChildNode = this.getNodeByPath(currentChildPath);
         }
         return children;
+    }
+
+    _pushRootNode(value){
+
+        let index = 0;
+        while(this.getNodeByPath([index++]));
+
+        this.nodes.push(new Node_Beta([index],value));
+    }
+
+    pushChildNode(pathArr,value,callback){
+        if (pathArr.length == 0){
+            this._pushRootNode(value);
+        }
+
+
+        const parentNode = this.getNodeByPath(pathArr);
+        const children = this.getChildrenByPath(pathArr);
+        this.nodes.push(new Node_Beta([...parentNode.path,children.length],value));
+        callback(this.structure,parentNode,value);
     }
     
 }
