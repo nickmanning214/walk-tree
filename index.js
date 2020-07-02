@@ -1,4 +1,3 @@
-const Node = require('./private_classes/Node.js');
 const Node_Beta = require('./private_classes/Node_Beta.js');
 
 function arrayequal(array1,array2){
@@ -99,22 +98,6 @@ class Tree{
 
 
 
-//old
-function walk(tree,getFirstNode,getChildNodesOfParentNode, currentNodes = [], parentNode){
-
-    if (typeof parentNode == 'undefined') currentNodes = walk(tree,getFirstNode,getChildNodesOfParentNode,[],getFirstNode(tree,Node))
-    else{
-        currentNodes.push(parentNode);
-
-        getChildNodesOfParentNode(tree,parentNode,Node).forEach(childNode=>{
-            
-            currentNodes = walk(tree,getFirstNode,getChildNodesOfParentNode,currentNodes,childNode);
-        })
-        //rest
-    }
-    return currentNodes;
-
-}
 
 
 
@@ -123,9 +106,4 @@ function walk(tree,getFirstNode,getChildNodesOfParentNode, currentNodes = [], pa
 
 
 
-
-
-
-
-
-module.exports = {Tree, walk};
+module.exports = {Tree};

@@ -1,4 +1,4 @@
-const {walk} = require('../index.js')
+const walk = require('../walk/walk.js')
 const path = require('path');
 const fs = require('fs');
 

@@ -141,6 +141,7 @@ class Tree{
         let children = this._getChildNodesByPath(pathArr);
         let child;
         while (child = children[i++]){
+            console.log('here')
             child.path[child.path.length-1]++;
         }
 

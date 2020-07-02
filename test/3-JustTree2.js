@@ -51,7 +51,6 @@ describe('Tree',function(){
 
         }
         else{
-            console.log('hi2')
             node.getParentNode().value.kids.splice( index, 0, node.value );
         } 
     }

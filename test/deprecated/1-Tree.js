@@ -1,12 +1,13 @@
 const assert = require('assert');
 const path = require('path');
-const Tree = require('../index.js').Tree;
+const Tree = require('../../Tree.js').Tree;
 
-let customStructure = require('./structures/custom.js');
+let customStructure = require('../structures/custom.js');
 
-const _Node = require('../private_classes/Node.js')
-const _Node_Beta = require('../private_classes/Node_Beta.js');
-const flatObject = require('./tree-instances/flatObject.js');
+const _Node_Beta = require('../../private_classes/Node_Beta.js');
+const Node3 = require('../../private_classes/Node3.js');
+
+const flatObject = require('../tree-instances/flatObject.js');
 
 
 
@@ -18,29 +19,27 @@ describe('Tree',function(){
 
 
 
-        const directoryTree = require('./tree-instances/directory.js');
-        const nestedObjectTree = require('./tree-instances/nestedObject.js');
-        const flatObjectTree = require('./tree-instances/flatObject.js');
-        const customTree = require('./tree-instances/custom.js');
+        const directoryTree = require('../tree-instances/directory.js');
+        const nestedObjectTree = require('../tree-instances/nestedObject.js');
+        const flatObjectTree = require('../tree-instances/flatObject.js');
+        const customTree = require('../tree-instances/custom.js');
         
 
         describe('#getValueByPath',function(){
             
             it('should return the (first) root value',function(){
-                
                 assert(directoryTree.getValueByPath([0])===path.join(__dirname,'structures/directory'));
                 assert.deepStrictEqual(nestedObjectTree.getValueByPath([0]),nestedObjectTree.structure.a)
                 //assert(nestedObjectTree.getValueByPath([0]) == nestedObjectTree.structure.a) This happens to work. Should it?
-
-                assert(flatObjectTree.getValueByPath([0])===flatObjectTree.structure.a);
+                assert.deepStrictEqual(flatObjectTree.getValueByPath([0]),{key:'a',value:flatObjectTree.structure.a});
                 assert(customTree.getValueByPath([0])===customTree.structure[0][0])
 
             });
 
             it('should return the first child of the first root value',function(){
-                
                 assert.deepStrictEqual(nestedObjectTree.getValueByPath([0,0]),nestedObjectTree.structure.a.children.b)
-                assert.deepStrictEqual(flatObjectTree.getValueByPath([0,0]),flatObjectTree.structure.b)
+                
+                assert.deepStrictEqual(flatObjectTree.getValueByPath([0,0]),{key:'b',value:flatObjectTree.structure.b})
 
             });
 
@@ -82,17 +81,23 @@ describe('Tree',function(){
         describe('nodes',function(){
             it('should show the nodes',function(){
                 let nestedNodes = nestedObjectTree.nodes; //replace with nestedTree
+                
                 assert(Array.isArray(nestedNodes));
                 assert(nestedNodes.every(node=>{
                     return node instanceof _Node_Beta;
                 }));
+                 
 
+                
                 let flatNodes = flatObjectTree.nodes;
+                
                 assert(Array.isArray(flatNodes));
                 assert(flatNodes.every(node=>{
-                    return node instanceof _Node_Beta;
+                    return node instanceof Node3;
                 }));
 
+
+                
 
                 const pathsHardCoded = [
                     [0],//a
@@ -112,17 +117,18 @@ describe('Tree',function(){
                     return node.path
                 });
 
+
                 const flatPaths = flatNodes.map(node=>{
                     return node.path
                 });
 
- 
+                
 
                 assert.deepEqual(pathsHardCoded,nestedPaths);
                 assert.deepEqual(flatPaths,nestedPaths); //"Try this idk" still there even though it's cloned...
 
-              
-                
+
+                /*
                 assert.deepEqual(flatNodes.map(node=>{
                     return node.value
                 }),[
@@ -170,7 +176,7 @@ describe('Tree',function(){
                         parent:'c'
                     }
                     
-                ]);
+                ]);*/
     
                 })
             })

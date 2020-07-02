@@ -1,5 +1,4 @@
-const {walk} = require('../index.js')
-
+const walk = require('../walk/walk.js')
 
 
 module.exports = function(obj,parentAttribute){
