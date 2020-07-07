@@ -118,12 +118,55 @@ class Tree{
     }
 
     removeNode(pathArr){
-        const removed = remove(this.nodes,function(node){
-            return arrayequal(node.path,pathArr);
-        })[0];
-        this.describeRemove(removed);
 
-        const path = removed.path;
+
+        const rootRemovedNode = this._getNodeByPath(pathArr);
+
+        let removedTree = new Tree(this,()=>{
+            return [
+                {
+                    originalPath:pathArr,
+                    value:rootRemovedNode.value
+                }]
+        },(parentNode)=>{
+            const arr = this._getChildNodesByPath(parentNode.originalPath).map(node=>{
+                return {
+                    originalPath:node.path,
+                    value:node.value
+                }
+            })
+
+
+            return arr;
+            //how to get the path
+            //This will require some coding.
+            //You need to get the children nodes of these roots, and then return them in the form with the originalpath like above.
+
+            //this.describeChildren
+        },this.describeAdd,this.describeEdit,this.describeRemove);
+       
+
+        const removed = remove(this.nodes,function(node){
+            
+            //this will just remove the root deleted node. How to remove all nodes?
+            //return arrayequal(node.path,pathArr);
+
+
+            //Now here the key is to remove the node if its path is contained inside of removedTree
+
+
+            return removedTree.nodes.filter(removedNode=>{
+                return arrayequal(removedNode.value.originalPath,node.path)
+            }).length
+
+
+        });
+        this.describeRemove(rootRemovedNode,removedTree);
+        
+
+        //removed used to be a single node. What is all of this?
+        //Oh - this code is to shift all "next siblings" down one in the "path"
+        const path = rootRemovedNode.path;
         const pathLength = path.length;
         let index = path[pathLength-1];
         
@@ -141,7 +184,6 @@ class Tree{
         let children = this._getChildNodesByPath(pathArr);
         let child;
         while (child = children[i++]){
-            console.log('here')
             child.path[child.path.length-1]++;
         }
 

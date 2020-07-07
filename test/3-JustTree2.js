@@ -2,7 +2,7 @@ const assert = require('assert');
 const remove = require('lodash.remove');
 const { nodes } = require('./tree-instances/custom.js');
 
-describe('Tree',function(){
+describe('Tree (Family tree example)',function(){
     
     const Tree = require('../TreeBeta.js');
 
