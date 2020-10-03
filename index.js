@@ -12,33 +12,37 @@ class Tree{
         this.describeRoots = describeRoots;
         this.describeChildren = describeChildren;
         this.describePush = describePush;
-
-        this.firstNodes = this.describeRoots(this.structure).map((value,i)=>{
-            return new Node_Beta([i],value);
-        });
-
-        let nodes = [...this.firstNodes];
-
-        function addChildNodes(node){
-            //node is already in the array
-            let childNodes = this.describeChildren(node,this.structure).map((value,j,nodes)=>{
-                return new Node_Beta([...node.path,j],value);
+        
+        Promise.resolve(this.describeRoots(this.structure)).then(e=>{
+            this.firstNodes = e.map((value,i)=>{
+                return new Node_Beta([i],value);
             });
 
-            childNodes.forEach(node=>{
-                nodes.push(node);
-                addChildNodes.call(this,node)
+            this.nodes = [...this.firstNodes];
+
+            function addChildNodes(node){
+                //node is already in the array
+                Promise.resolve(this.describeChildren(node,this.structure)).then(e=>{
+                    e.map((value,j,nodes)=>{
+                        return new Node_Beta([...node.path,j],value);
+                    }).forEach(node=>{
+                        this.nodes.push(node);
+                        addChildNodes.call(this,node)
+                    });
+
+                })
+
+            }
+
+            this.firstNodes.forEach(node=>{
+                //"node" is already in the array
+                addChildNodes.call(this,node);
             })
 
-        }
+    
 
-        this.firstNodes.forEach(node=>{
-            //"node" is already in the array
-            addChildNodes.call(this,node);
-        })
-
- 
-        this.nodes = nodes;
+            })
+        
 
 
       
