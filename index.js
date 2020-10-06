@@ -8,43 +8,44 @@ function arrayequal(array1,array2){
 
 class Tree{
     constructor(structure,describeRoots,describeChildren,describePush){
-        return (async ()=>{
-            this.structure = structure;
-            this.describeRoots = describeRoots;
-            this.describeChildren = describeChildren;
-            this.describePush = describePush;
-            
-            await Promise.resolve(this.describeRoots(this.structure)).then(e=>{
-                this.firstNodes = e.map((value,i)=>{
-                    return new Node_Beta([i],value);
-                });
+        this.structure = structure;
+        this.describeRoots = describeRoots;
+        this.describeChildren = describeChildren;
+        this.describePush = describePush;
+        
+        Promise.resolve(this.describeRoots(this.structure)).then(e=>{
+            this.firstNodes = e.map((value,i)=>{
+                return new Node_Beta([i],value);
+            });
 
-                this.nodes = [...this.firstNodes];
+            this.nodes = [...this.firstNodes];
 
-                function addChildNodes(node){
-                    //node is already in the array
-                    Promise.resolve(this.describeChildren(node,this.structure)).then(e=>{
-                        e.map((value,j,nodes)=>{
-                            return new Node_Beta([...node.path,j],value);
-                        }).forEach(node=>{
-                            this.nodes.push(node);
-                            addChildNodes.call(this,node)
-                        });
+            function addChildNodes(node){
+                //node is already in the array
+                Promise.resolve(this.describeChildren(node,this.structure)).then(e=>{
+                    e.map((value,j,nodes)=>{
+                        return new Node_Beta([...node.path,j],value);
+                    }).forEach(node=>{
+                        this.nodes.push(node);
+                        addChildNodes.call(this,node)
+                    });
 
-                    })
-
-                }
-
-                this.firstNodes.forEach(node=>{
-                    //"node" is already in the array
-                    addChildNodes.call(this,node);
                 })
 
+            }
+
+            this.firstNodes.forEach(node=>{
+                //"node" is already in the array
+                addChildNodes.call(this,node);
+            })
+
+    
+
+            })
         
 
-                })
-                return this;
-        })();
+
+      
 
     }
 
@@ -58,13 +59,17 @@ class Tree{
         return node && node.value;
     }
 
-    getChildrenByPath(pathArr){
+    async getChildrenByPath(pathArr){
+        if (pathArr.length == 0){
+            return await this.describeRoots(this.structure);
+        }
+        
         let children = [];
         
         let currentChildIndex = 0;
         let currentChildPath = [...pathArr,currentChildIndex]
+        
         let currentChildNode = this.getNodeByPath(currentChildPath);
-
         while(currentChildNode){
             children.push(this.getValueByPath(currentChildPath));
             currentChildIndex++;
