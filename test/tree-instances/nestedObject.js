@@ -1,6 +1,6 @@
 const letterPyramidNested = require('../structures/letterPyramidNested.js');
 
-const Tree = require('../../index.js').Tree;
+const Tree = require('../../index.js');
 
 function describeRootsNested(structure){
     return Object.keys(structure).map(key=>structure[key]);

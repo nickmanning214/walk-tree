@@ -1,4 +1,4 @@
-const Node3 = require('./private_classes/Node3.js');
+const Node3 = require('../private_classes/Node3.js');
 const remove = require('lodash.remove');
 
 function arrayequal(array1,array2){
